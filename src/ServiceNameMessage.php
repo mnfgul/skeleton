@@ -1,10 +1,10 @@
 <?php
 
-namespace NotificationChannels\:channel_namespace;
+namespace NotificationChannels\AwsSns;
 
 use Illuminate\Support\Arr;
 
-class :service_nameMessage
+class SNSMessage
 {
     // Message structure here
 }
