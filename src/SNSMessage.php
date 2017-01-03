@@ -3,6 +3,8 @@
 namespace NotificationChannels\AwsSns;
 
 use Aws\Sns\Message;
+use NotificationChannels\AwsSns\Notifications\APNS;
+use NotificationChannels\AwsSns\Notifications\GCM;
 
 class SNSMessage
 {
@@ -19,13 +21,22 @@ class SNSMessage
     protected $targetArn;
 
     /** @var string */
-    protected $messageStructure = 'json';
+    protected $messageStructure;
 
     /** @var array */
     protected $messageAttributes;
 
     /** @var string */
     protected $phoneNumber;
+
+    /** @var NotificationChannels\AwsSns\Notifications\APNS */
+    protected $apnsMessage;
+
+    /** @var NotificationChannels\AwsSns\Notifications\APNS */
+    protected $apnsSandboxMessage;
+
+    /** @var NotificationChannels\AwsSns\Notifications\GCM */
+    protected $gcmMessage;
 
     /**
      * @param string $message
@@ -36,7 +47,7 @@ class SNSMessage
     }
 
     /**
-     * Set the message content.
+     * Set the default message content.
      *
      * @param string $value
      *
@@ -134,17 +145,67 @@ class SNSMessage
     }
 
     /**
+     * Set custom message for APNS
+     *
+     * @param NotificationChannels\AwsSns\Notifications\APNS $apnsMessage  APNS message.
+     *
+     * @return $this
+     */
+    public function apnsMessage(APNS $apnsMessage)
+    {
+        $this->apnsMessage = $apnsMessage;
+
+        return $this;
+    }
+
+    /**
+     * Set custom message for GCM
+     *
+     * @param NotificationChannels\AwsSns\Notifications\GCM $gcmMessage  GCM message.
+     *
+     * @return $this
+     */
+    public function gcmMessage(GCM $gcmMessage)
+    {
+        $this->gcmMessage = $gcmMessage;
+
+        return $this;
+    }
+
+    /**
      * Get message in array format for SNS
      *
      * @return array
      */
     public function toArray()
     {
-        $message = [
-            'Message' => $this->message,
-            'Subject' => $this->subject,
-            //'MessageStructure' => $this->messageStructure,
-        ];
+        $message = [];
+
+        if($this->messageStructure == 'json'){
+            $jsonMessage = [];
+            $jsonMessage['default'] = $this->message;
+
+            // APNS Custom Message
+            if(isset($this->apnsMessage)){
+                $jsonMessage['APNS'] = $this->apnsMessage->toJSON();
+            }
+
+            if(isset($this->apnsSandboxMessage)){
+                $jsonMessage['APNS_SANDBOX'] = $this->apnsSandboxMessage;
+            }
+
+            // GCM Custom Message
+            if(isset($this->gcmMessage)){
+                $jsonMessage['GCM'] = $this->gcmMessage->toJSON();
+            }
+
+            $message['Message'] = json_encode($jsonMessage); // TODO: escape fix
+
+        }else{
+            $message['Message'] = $this->message;
+        }
+
+        $message['Subject'] = $this->subject;
 
         if ($this->topicArn) {
             $message['TopicArn'] = $this->topicArn;
@@ -164,15 +225,5 @@ class SNSMessage
 
         return $message;
     }
-
-
-    //Publish/send message to the endpoint
-    /*
-		$jsonMessage = '{
-			"default": "Hi my friend",
-			"APNS": "{\"aps\":{\"alert\": \"Hi my friend\"} }",
-			"APNS_SANDBOX":"{\"aps\":{\"alert\":\"Hi my friend\"}}",
-			"GCM": "{ \"data\": { \"message\": \"Hi my friend\" } }"
-			}';
-    */
+    
 }
