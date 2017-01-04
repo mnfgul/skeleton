@@ -29,9 +29,7 @@ class SNSChannel
         $snsMessage = $notification->toSNS($notifiable);
         print_r($snsMessage->toArray());die();
         try {
-            var_dump($snsMessage->toArray());
             $result = $this->sns->publish($snsMessage->toArray());
-            //var_dump($result);
         } catch (Exception $exception) {
 
             if ($exception->isConnectionError()) {

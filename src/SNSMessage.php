@@ -5,6 +5,8 @@ namespace NotificationChannels\AwsSns;
 use Aws\Sns\Message;
 use NotificationChannels\AwsSns\Notifications\APNS;
 use NotificationChannels\AwsSns\Notifications\GCM;
+use NotificationChannels\AwsSns\Notifications\SMS;
+use NotificationChannels\AwsSns\Notifications\Email;
 
 class SNSMessage
 {
@@ -37,6 +39,12 @@ class SNSMessage
 
     /** @var NotificationChannels\AwsSns\Notifications\GCM */
     protected $gcmMessage;
+
+    /** @var NotificationChannels\AwsSns\Notifications\SMS */
+    protected $smsMessage;
+
+    /** @var NotificationChannels\AwsSns\Notifications\Email */
+    protected $emailMessage;
 
     /**
      * @param string $message
@@ -173,6 +181,34 @@ class SNSMessage
     }
 
     /**
+     * Set custom message for SMS
+     *
+     * @param NotificationChannels\AwsSns\Notifications\SMS $smsMessage  SMS message.
+     *
+     * @return $this
+     */
+    public function smsMessage(SMS $smsMessage)
+    {
+        $this->smsMessage = $smsMessage;
+
+        return $this;
+    }
+
+    /**
+     * Set custom message for Email
+     *
+     * @param NotificationChannels\AwsSns\Notifications\Email $emailMessage  Email message.
+     *
+     * @return $this
+     */
+    public function emailMessage(Email $emailMessage)
+    {
+        $this->emailMessage = $emailMessage;
+
+        return $this;
+    }
+
+    /**
      * Get message in array format for SNS
      *
      * @return array
@@ -197,6 +233,16 @@ class SNSMessage
             // GCM Custom Message
             if(isset($this->gcmMessage)){
                 $jsonMessage['GCM'] = $this->gcmMessage->toJSON();
+            }
+
+            // SMS Custom Message
+            if(isset($this->smsMessage)){
+                $jsonMessage['sms'] = $this->smsMessage->getMessage();
+            }
+
+            // Email Custom Message
+            if(isset($this->emailMessage)){
+                $jsonMessage['email'] = $this->emailMessage->getMessage();
             }
 
             $message['Message'] = json_encode($jsonMessage); // TODO: escape fix
@@ -225,5 +271,5 @@ class SNSMessage
 
         return $message;
     }
-    
+
 }

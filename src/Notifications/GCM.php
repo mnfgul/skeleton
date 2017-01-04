@@ -2,38 +2,18 @@
 
 namespace NotificationChannels\AwsSns\Notifications;
 
-class GCM
+use NotificationChannels\AwsSns\Notifications\Notification;
+
+class GCM extends Notification
 {
     /** @var array */
-    protected $gmcMessage = [];
+    protected $gmcNotification = [];
 
     /** @var array */
     protected $data = [];
 
     /** @var array */
     protected $notification = [];
-
-    /**
-    * @param string $message   APNS message.
-     */
-    public function __construct($message = '')
-    {
-        $this->data['message'] = $message;
-    }
-
-    /**
-     * Set message content
-     *
-     * @param string $message  Message content
-     *
-     * @return $this
-     */
-    public function message($message)
-    {
-        $this->data['message'] = $message;
-        
-        return $this;
-    }
 
     /**
      * Set notification priority
@@ -44,7 +24,7 @@ class GCM
      */
     public function priority($priority)
     {
-        $this->gmcMessage['priority'] = $priority;
+        $this->gmcNotification['priority'] = $priority;
 
         return $this;
     }
@@ -58,7 +38,7 @@ class GCM
      */
     public function collapseKey($collapseKey)
     {
-        $this->gmcMessage['collapse_key'] = $collapseKey;
+        $this->gmcNotification['collapse_key'] = $collapseKey;
 
         return $this;
     }
@@ -72,7 +52,7 @@ class GCM
      */
     public function timeToLive($timeToLive)
     {
-        $this->gmcMessage['time_to_live'] = $timeToLive;
+        $this->gmcNotification['time_to_live'] = $timeToLive;
 
         return $this;
     }
@@ -113,15 +93,15 @@ class GCM
      */
     public function toArray()
     {
-        $gmcMessage = $this->gmcMessage;
-
-        $gmcMessage['data'] = $this->data;
+        // append data and notification payloads
+        $this->data['message'] = $this->getMessage();
+        $this->gmcNotification['data'] = $this->data;
 
         if(!empty($this->notification)){
-            $gcmMessage['notification'] = $this->notification;
+            $this->gmcNotification['notification'] = $this->notification;
         }
 
-        return $gmcMessage;
+        return $this->gmcNotification;
     }
 
     /**

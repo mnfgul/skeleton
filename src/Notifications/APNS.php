@@ -2,35 +2,15 @@
 
 namespace NotificationChannels\AwsSns\Notifications;
 
-class APNS
+use NotificationChannels\AwsSns\Notifications\Notification;
+
+class APNS extends Notification
 {
     /** @var array */
-    protected $message = [];
+    protected $apnsNotification = [];
 
     /** @var array */
     protected $customPayload = [];
-
-    /**
-    * @param string|array $alert    APNS message content.
-     */
-    public function __construct($alert = '')
-    {
-        $this->message['alert'] = $alert;
-    }
-
-    /**
-     * Set alert message
-     *
-     * @param string|array $alert  Alert message content
-     *
-     * @return $this
-     */
-    public function message($alert)
-    {
-        $this->message['alert'] = $alert;
-
-        return $this;
-    }
 
     /**
      * Set badge count of app icon
@@ -41,7 +21,7 @@ class APNS
      */
     public function badge($badge)
     {
-        $this->message['badge'] = $badge;
+        $this->apnsNotification['badge'] = $badge;
 
         return $this;
     }
@@ -55,7 +35,7 @@ class APNS
      */
     public function sound($sound)
     {
-        $this->message['sound'] = $sound;
+        $this->apnsNotification['sound'] = $sound;
 
         return $this;
     }
@@ -85,6 +65,7 @@ class APNS
     public function toArray()
     {
         $apnsMessage = [];
+        $this->apnsNotification['message'] = $this->getMessage();
 
         $apnsMessage['aps'] = $this->message;
 
