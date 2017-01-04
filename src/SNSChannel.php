@@ -19,19 +19,22 @@ class SNSChannel
     /**
      * Send the given notification.
      *
-     * @param mixed $notifiable
+     * @param mixed                                  $notifiable
      * @param \Illuminate\Notifications\Notification $notification
      *
      * @throws \NotificationChannels\AwsSns\Exceptions\CouldNotSendNotification
+     *
+     * @return array
      */
     public function send($notifiable, Notification $notification)
     {
         $snsMessage = $notification->toSNS($notifiable);
-        print_r($snsMessage->toArray());die();
-        try {
-            $result = $this->sns->publish($snsMessage->toArray());
-        } catch (Exception $exception) {
 
+        try {
+            $response = $this->sns->publish($snsMessage->toArray());
+
+            return $response;
+        } catch (Exception $exception) {
             if ($exception->isConnectionError()) {
                 throw CouldNotSendNotification::connectionFailed($exception);
             }

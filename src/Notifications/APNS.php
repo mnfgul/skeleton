@@ -2,8 +2,6 @@
 
 namespace NotificationChannels\AwsSns\Notifications;
 
-use NotificationChannels\AwsSns\Notifications\Notification;
-
 class APNS extends Notification
 {
     /** @var array */
@@ -13,9 +11,9 @@ class APNS extends Notification
     protected $customPayload = [];
 
     /**
-     * Set badge count of app icon
+     * Set badge count of app icon.
      *
-     * @param int $padge  Badge count
+     * @param int $padge Badge count
      *
      * @return $this
      */
@@ -27,9 +25,9 @@ class APNS extends Notification
     }
 
     /**
-     * Set alert message sound
+     * Set alert message sound.
      *
-     * @param string $sound  System file sound
+     * @param string $sound System file sound
      *
      * @return $this
      */
@@ -41,16 +39,16 @@ class APNS extends Notification
     }
 
     /**
-     * Add object to custom payload
+     * Add object to custom payload.
      *
-     * @param string $key  Custompayload key
-     * @param mixed $value Custompayload value
+     * @param string $key   Custompayload key
+     * @param mixed  $value Custompayload value
      *
      * @return $this
      */
     public function addCustomPayload($key, $value)
     {
-        if($key){
+        if ($key) {
             $this->customPayload[$key] = $value;
         }
 
@@ -58,7 +56,7 @@ class APNS extends Notification
     }
 
     /**
-     * Get message in array format
+     * Get message in array format.
      *
      * @return array
      */
@@ -69,7 +67,7 @@ class APNS extends Notification
 
         $apnsMessage['aps'] = $this->message;
 
-        if(!empty($this->customPayload)){
+        if (!empty($this->customPayload)) {
             $apnsMessage = array_merge($apnsMessage, $this->customPayload);
         }
 
@@ -77,7 +75,7 @@ class APNS extends Notification
     }
 
     /**
-     * Get message in JSON format
+     * Get message in JSON format.
      *
      * @return string JSON object
      */

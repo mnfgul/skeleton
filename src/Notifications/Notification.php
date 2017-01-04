@@ -8,7 +8,7 @@ abstract class Notification
     protected $message = [];
 
     /**
-    * @param string|array $message Message content
+     * @param string|array $message Message content
      */
     public function __construct($message = '')
     {
@@ -16,9 +16,9 @@ abstract class Notification
     }
 
     /**
-     * Set notification message
+     * Set notification message.
      *
-     * @param string|array $alert  Notification message content
+     * @param string|array $alert Notification message content
      *
      * @return $this
      */
@@ -30,7 +30,7 @@ abstract class Notification
     }
 
     /**
-     * Get notification message
+     * Get notification message.
      *
      * @return string|array $message  Notification message content
      */

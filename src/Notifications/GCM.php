@@ -2,8 +2,6 @@
 
 namespace NotificationChannels\AwsSns\Notifications;
 
-use NotificationChannels\AwsSns\Notifications\Notification;
-
 class GCM extends Notification
 {
     /** @var array */
@@ -16,7 +14,7 @@ class GCM extends Notification
     protected $notification = [];
 
     /**
-     * Set notification priority
+     * Set notification priority.
      *
      * @param string $priority
      *
@@ -30,7 +28,7 @@ class GCM extends Notification
     }
 
     /**
-     * Set notification collapse key
+     * Set notification collapse key.
      *
      * @param string $collapseKey
      *
@@ -44,7 +42,7 @@ class GCM extends Notification
     }
 
     /**
-     * Set notification time to live
+     * Set notification time to live.
      *
      * @param int $timeToLive
      *
@@ -57,11 +55,10 @@ class GCM extends Notification
         return $this;
     }
 
-
     /**
-     * Set GCM message data payload
+     * Set GCM message data payload.
      *
-     * @param array $data  Data payload array
+     * @param array $data Data payload array
      *
      * @return $this
      */
@@ -73,7 +70,7 @@ class GCM extends Notification
     }
 
     /**
-     * Set GMC notification payload
+     * Set GMC notification payload.
      *
      * @param array $notification Notification object
      *
@@ -87,7 +84,7 @@ class GCM extends Notification
     }
 
     /**
-     * Get message in array format
+     * Get message in array format.
      *
      * @return array
      */
@@ -97,7 +94,7 @@ class GCM extends Notification
         $this->data['message'] = $this->getMessage();
         $this->gmcNotification['data'] = $this->data;
 
-        if(!empty($this->notification)){
+        if (!empty($this->notification)) {
             $this->gmcNotification['notification'] = $this->notification;
         }
 
@@ -105,7 +102,7 @@ class GCM extends Notification
     }
 
     /**
-     * Get message in json format
+     * Get message in json format.
      *
      * @return string JSON object
      */

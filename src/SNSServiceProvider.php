@@ -13,7 +13,6 @@ class SNSServiceProvider extends ServiceProvider
     {
 
         //
-        
     }
 
     /**

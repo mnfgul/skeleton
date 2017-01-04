@@ -153,9 +153,9 @@ class SNSMessage
     }
 
     /**
-     * Set custom message for APNS
+     * Set custom message for APNS.
      *
-     * @param NotificationChannels\AwsSns\Notifications\APNS $apnsMessage  APNS message.
+     * @param NotificationChannels\AwsSns\Notifications\APNS $apnsMessage APNS message.
      *
      * @return $this
      */
@@ -167,9 +167,9 @@ class SNSMessage
     }
 
     /**
-     * Set custom message for GCM
+     * Set custom message for GCM.
      *
-     * @param NotificationChannels\AwsSns\Notifications\GCM $gcmMessage  GCM message.
+     * @param NotificationChannels\AwsSns\Notifications\GCM $gcmMessage GCM message.
      *
      * @return $this
      */
@@ -181,9 +181,9 @@ class SNSMessage
     }
 
     /**
-     * Set custom message for SMS
+     * Set custom message for SMS.
      *
-     * @param NotificationChannels\AwsSns\Notifications\SMS $smsMessage  SMS message.
+     * @param NotificationChannels\AwsSns\Notifications\SMS $smsMessage SMS message.
      *
      * @return $this
      */
@@ -195,9 +195,9 @@ class SNSMessage
     }
 
     /**
-     * Set custom message for Email
+     * Set custom message for Email.
      *
-     * @param NotificationChannels\AwsSns\Notifications\Email $emailMessage  Email message.
+     * @param NotificationChannels\AwsSns\Notifications\Email $emailMessage Email message.
      *
      * @return $this
      */
@@ -209,7 +209,7 @@ class SNSMessage
     }
 
     /**
-     * Get message in array format for SNS
+     * Get message in array format for SNS.
      *
      * @return array
      */
@@ -217,37 +217,39 @@ class SNSMessage
     {
         $message = [];
 
-        if($this->messageStructure == 'json'){
+        if ($this->messageStructure == 'json') {
+            $message['MessageStructure'] = $this->messageStructure;
+
+            // build json object for message content
             $jsonMessage = [];
             $jsonMessage['default'] = $this->message;
 
             // APNS Custom Message
-            if(isset($this->apnsMessage)){
+            if (isset($this->apnsMessage)) {
                 $jsonMessage['APNS'] = $this->apnsMessage->toJSON();
             }
 
-            if(isset($this->apnsSandboxMessage)){
+            if (isset($this->apnsSandboxMessage)) {
                 $jsonMessage['APNS_SANDBOX'] = $this->apnsSandboxMessage;
             }
 
             // GCM Custom Message
-            if(isset($this->gcmMessage)){
+            if (isset($this->gcmMessage)) {
                 $jsonMessage['GCM'] = $this->gcmMessage->toJSON();
             }
 
             // SMS Custom Message
-            if(isset($this->smsMessage)){
+            if (isset($this->smsMessage)) {
                 $jsonMessage['sms'] = $this->smsMessage->getMessage();
             }
 
             // Email Custom Message
-            if(isset($this->emailMessage)){
+            if (isset($this->emailMessage)) {
                 $jsonMessage['email'] = $this->emailMessage->getMessage();
             }
 
             $message['Message'] = json_encode($jsonMessage); // TODO: escape fix
-
-        }else{
+        } else {
             $message['Message'] = $this->message;
         }
 
@@ -266,10 +268,9 @@ class SNSMessage
         }
 
         if ($this->messageAttributes) {
-            $message['messageAttributes'] = $this->messageAttributes;
+            $message['MessageAttributes'] = $this->messageAttributes;
         }
 
         return $message;
     }
-
 }
