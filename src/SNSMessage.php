@@ -7,6 +7,7 @@ use NotificationChannels\AwsSns\Notifications\APNS;
 use NotificationChannels\AwsSns\Notifications\GCM;
 use NotificationChannels\AwsSns\Notifications\SMS;
 use NotificationChannels\AwsSns\Notifications\Email;
+use NotificationChannels\AwsSns\Exceptions\InvalidNotificationFormat;
 
 class SNSMessage
 {
@@ -91,6 +92,10 @@ class SNSMessage
      */
     public function topicArn($value)
     {
+        if (isset($this->targetArn) || isset($this->phoneNumber)) {
+            throw InvalidNotificationFormat::multipleEndPoints();
+        }
+
         $this->topicArn = $value;
 
         return $this;
@@ -105,7 +110,29 @@ class SNSMessage
      */
     public function targetArn($value)
     {
+        if (isset($this->topicArn) || isset($this->phoneNumber)) {
+            throw InvalidNotificationFormat::multipleEndPoints();
+        }
+
         $this->targetArn = $value;
+
+        return $this;
+    }
+
+    /**
+     * Set phone number for SMS messages.
+     *
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function phoneNumber($value)
+    {
+        if (isset($this->topicArn) || isset($this->targetArn)) {
+            throw InvalidNotificationFormat::multipleEndPoints();
+        }
+
+        $this->phoneNumber = $value;
 
         return $this;
     }
@@ -134,20 +161,6 @@ class SNSMessage
     public function messageStructure($value = 'json')
     {
         $this->messageStructure = $value;
-
-        return $this;
-    }
-
-    /**
-     * Set phone number for SMS messages.
-     *
-     * @param string $value
-     *
-     * @return $this
-     */
-    public function phoneNumber($value)
-    {
-        $this->phoneNumber = $value;
 
         return $this;
     }

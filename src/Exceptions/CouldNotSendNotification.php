@@ -7,7 +7,7 @@ use Exception;
 class CouldNotSendNotification extends Exception
 {
     /**
-     * @param \Aws\Sns\Exception $response
+     * @param \Aws\Sns\Exception $exception
      *
      * @return static
      */
@@ -17,7 +17,7 @@ class CouldNotSendNotification extends Exception
     }
 
     /**
-     * @param \Aws\Sns\Exception $response
+     * @param \Aws\Sns\Exception $exception
      *
      * @return static
      */
@@ -27,7 +27,7 @@ class CouldNotSendNotification extends Exception
     }
 
     /**
-     * @param \Aws\Sns\Exception $response
+     * @param \Aws\Sns\Exception $exception
      *
      * @return static
      */
@@ -37,11 +37,11 @@ class CouldNotSendNotification extends Exception
     }
 
     /**
-     * @param \Aws\Sns\Exception $response
+     * @param \Aws\Sns\Exception $exception
      *
      * @return static
      */
-    public static function serviceRespondedWithAnError($response)
+    public static function serviceRespondedWithAnError($exception)
     {
         return new static("Service responded with an error. {$exception->getAwsErrorCode()}: {$exception->getMessage()}");
     }
