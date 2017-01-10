@@ -67,7 +67,7 @@ class APNS extends Notification
 
         $apnsMessage['aps'] = $this->apnsNotification;
 
-        if (!empty($this->customPayload)) {
+        if (! empty($this->customPayload)) {
             $apnsMessage = array_merge($apnsMessage, $this->customPayload);
         }
 

@@ -3,9 +3,9 @@
 namespace NotificationChannels\AwsSns;
 
 use Aws\Sns\Message;
-use NotificationChannels\AwsSns\Notifications\APNS;
 use NotificationChannels\AwsSns\Notifications\GCM;
 use NotificationChannels\AwsSns\Notifications\SMS;
+use NotificationChannels\AwsSns\Notifications\APNS;
 use NotificationChannels\AwsSns\Notifications\Email;
 use NotificationChannels\AwsSns\Exceptions\InvalidNotificationFormat;
 

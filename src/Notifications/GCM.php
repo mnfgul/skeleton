@@ -94,7 +94,7 @@ class GCM extends Notification
         $this->data['message'] = $this->getMessage();
         $this->gmcNotification['data'] = $this->data;
 
-        if (!empty($this->notification)) {
+        if (! empty($this->notification)) {
             $this->gmcNotification['notification'] = $this->notification;
         }
 

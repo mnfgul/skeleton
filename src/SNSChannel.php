@@ -4,9 +4,9 @@ namespace NotificationChannels\AwsSns;
 
 use Exception;
 use Aws\Sns\SnsClient;
-use NotificationChannels\AwsSns\Exceptions\CouldNotSendNotification;
-use Illuminate\Notifications\Notification;
 use Aws\Sns\Exception\SnsException;
+use Illuminate\Notifications\Notification;
+use NotificationChannels\AwsSns\Exceptions\CouldNotSendNotification;
 
 class SNSChannel
 {
