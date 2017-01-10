@@ -11,6 +11,16 @@ class CouldNotSendNotification extends Exception
      *
      * @return static
      */
+    public static function genericError(Exception $exception)
+    {
+        return new static("An error occured while trying to send notification. Error: {$exception->getMessage()}");
+    }
+
+    /**
+     * @param \Aws\Sns\Exception $exception
+     *
+     * @return static
+     */
     public static function connectionFailed(Exception $exception)
     {
         return new static("Could not connect to the AWS. {$exception->getAwsErrorCode()}: {$exception->getMessage()}");

@@ -63,9 +63,9 @@ class APNS extends Notification
     public function toArray()
     {
         $apnsMessage = [];
-        $this->apnsNotification['message'] = $this->getMessage();
+        $this->apnsNotification['alert'] = $this->getMessage();
 
-        $apnsMessage['aps'] = $this->message;
+        $apnsMessage['aps'] = $this->apnsNotification;
 
         if (!empty($this->customPayload)) {
             $apnsMessage = array_merge($apnsMessage, $this->customPayload);

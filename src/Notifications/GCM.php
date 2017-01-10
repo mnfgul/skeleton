@@ -11,7 +11,7 @@ class GCM extends Notification
     protected $data = [];
 
     /** @var array */
-    protected $notification = [];
+    protected $notification;
 
     /**
      * Set notification priority.
@@ -78,7 +78,7 @@ class GCM extends Notification
      */
     public function notification($notification)
     {
-        $this->notification = array_merge($this->notification, $notification);
+        $this->notification = $notification;
 
         return $this;
     }

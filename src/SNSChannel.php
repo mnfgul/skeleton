@@ -2,18 +2,19 @@
 
 namespace NotificationChannels\AwsSns;
 
-use App;
 use Exception;
+use Aws\Sns\SnsClient;
 use NotificationChannels\AwsSns\Exceptions\CouldNotSendNotification;
 use Illuminate\Notifications\Notification;
+use Aws\Sns\Exception\SnsException;
 
 class SNSChannel
 {
     private $sns;
 
-    public function __construct()
+    public function __construct(SNSClient $snsClient)
     {
-        $this->sns = App::make('aws')->createClient('sns');
+        $this->sns = $snsClient;
     }
 
     /**
@@ -35,22 +36,26 @@ class SNSChannel
 
             return $response;
         } catch (Exception $exception) {
-            if ($exception->isConnectionError()) {
-                throw CouldNotSendNotification::connectionFailed($exception);
-            }
-
-            switch ($exception->getAwsErrorCode()) {
-                case 'InvalidParameterException' || 'InvalidParameterValueException':{
-                    throw CouldNotSendNotification::invalidParameter($exception);
-                }break;
-
-                case 'AuthorizationErrorException':{
-                    throw CouldNotSendNotification::notAuthorized($exception);
-                }break;
-
-                default:{
-                    throw CouldNotSendNotification::serviceRespondedWithAnError($exception);
+            if ($exception instanceof SnsException) {
+                if ($exception->isConnectionError()) {
+                    throw CouldNotSendNotification::connectionFailed($exception);
                 }
+
+                switch ($exception->getAwsErrorCode()) {
+                    case 'InvalidParameterException' || 'InvalidParameterValueException':{
+                        throw CouldNotSendNotification::invalidParameter($exception);
+                    }break;
+
+                    case 'AuthorizationErrorException':{
+                        throw CouldNotSendNotification::notAuthorized($exception);
+                    }break;
+
+                    default:{
+                        throw CouldNotSendNotification::serviceRespondedWithAnError($exception);
+                    }
+                }
+            } else {
+                throw CouldNotSendNotification::genericError($exception);
             }
         }
     }
