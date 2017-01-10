@@ -2,8 +2,8 @@
 
 namespace NotificationChannels\AwsSns;
 
-use Illuminate\Support\ServiceProvider;
 use Aws\Sns\SnsClient;
+use Illuminate\Support\ServiceProvider;
 
 class SNSServiceProvider extends ServiceProvider
 {

@@ -5,8 +5,8 @@ namespace NotificationChannels\AwsSns\Test;
 use Mockery;
 use Aws\Sns\SnsClient;
 use Illuminate\Notifications\Notification;
-use NotificationChannels\AwsSns\SNSMessage;
 use NotificationChannels\AwsSns\SNSChannel;
+use NotificationChannels\AwsSns\SNSMessage;
 
 class SNSChannelTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,6 +39,7 @@ class SNSChannelTest extends \PHPUnit_Framework_TestCase
 class TestNotifiable
 {
     use \Illuminate\Notifications\Notifiable;
+
     /**
      * @return int
      */
