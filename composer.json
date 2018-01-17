@@ -35,6 +35,13 @@
     "scripts": {
         "test": "vendor/bin/phpunit"
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "NotificationChannels\\AwsSns\\SNSServiceProvider"
+            ]
+        }
+    },
     "config": {
         "sort-packages": true
     }
